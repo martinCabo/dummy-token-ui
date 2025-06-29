@@ -3,6 +3,7 @@ import { call, put, apply, takeEvery } from 'redux-saga/effects'
 import { isErrorWithMessage } from '../utils'
 import { connectWalletFailure, connectWalletSuccess, CONNECT_WALLET_REQUEST } from './actions'
 import { WindowWithEthereum } from './types'
+import { TRANSFER_REQUEST, transferFailure, TransferRequestAction, transferSuccess } from '../transfer/actions'
 
 // The regular `window` object with `ethereum` injected by MetaMask
 const windowWithEthereum = window as unknown as WindowWithEthereum
@@ -28,6 +29,7 @@ export const TOKEN_ABI = [
 
 export function* walletSaga() {
   yield takeEvery(CONNECT_WALLET_REQUEST, handleConnectWalletRequest)
+  yield takeEvery(TRANSFER_REQUEST, handleTransferRequest)
 }
 
 function* handleConnectWalletRequest(): Generator<any, void, any> {
@@ -49,5 +51,25 @@ function* handleConnectWalletRequest(): Generator<any, void, any> {
     yield put(connectWalletSuccess(address, balance.toString()))
   } catch (error) {
     yield put(connectWalletFailure(isErrorWithMessage(error) ? error.message : 'Unknown error'))
+  }
+}
+
+function* handleTransferRequest(action: TransferRequestAction) {
+  try {
+    const { amount, destination } = action.payload
+
+    const provider = new ethers.BrowserProvider(windowWithEthereum.ethereum)
+    yield call([provider, 'send'], 'eth_requestAccounts', []) as Awaited<ReturnType<typeof provider.send>>
+    //I get the signer
+    const signer = (yield call([provider, 'getSigner'])) as Awaited<ReturnType<typeof provider.getSigner>>
+    //I get the contract
+    const contract = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, signer) as ethers.Contract
+    //I call the transfer function
+    
+    yield apply(contract, contract.transfer, [destination, amount])
+    //I put the success action
+    yield put(transferSuccess())
+  } catch (error) {
+    yield put(transferFailure(isErrorWithMessage(error) ? error.message : 'Unknown error'))
   }
 }

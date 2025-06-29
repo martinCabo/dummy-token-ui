@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import { connectWalletRequest } from '../../modules/wallet/actions'
+import { openTransferModal } from '../../modules/transfer/actions'
 import {
   getAddress,
   getBalance,
@@ -20,7 +21,8 @@ const mapState = (state: RootState): MapStateProps => ({
 })
 
 const mapDispatch = (dispatch: MapDispatch): MapDispatchProps => ({
-  onConnect: () => dispatch(connectWalletRequest())
+  onConnect: () => dispatch(connectWalletRequest()),
+  onOpenTransferModal: () => dispatch(openTransferModal())
 })
 
 export default connect(mapState, mapDispatch)(App)

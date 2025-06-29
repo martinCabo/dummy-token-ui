@@ -1,21 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Props } from './TransferModal.types'
-import { Button, Modal, Field } from 'decentraland-ui'
+import { Button, Modal, Field, Close } from 'decentraland-ui'
+import './TransferModal.css'
 
 
-const TransferModal: React.FC<Props> = ({isOpen}) => {
+const TransferModal: React.FC<Props> = ({isOpen,error, isTransfering, onClose, onTransfer}) => {
+    const [amount, setAmount] = useState(0)
+    const [destination, setDestination] = useState('')
     return (
         <>
-            <Modal size="small" open={isOpen}>
-                <Modal.Header>Join us!</Modal.Header>
+            <Modal className="transfer-modal" size="small" open={isOpen} closeIcon={<Close onClick={onClose}/>} >
+                <Modal.Header className="modal-header">Transfer</Modal.Header>
+                <Modal.Description>Transfer tokens to a destination address</Modal.Description>
                 <Modal.Content>
-                    <Field label="Name" placeholder="Luis XVII" />
-                    <Field label="Email" placeholder="luigi@mail.com" />
+                    <Field label="Amount" tabIndex='1' type='number' placeholder="100" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
+                    <Field label="Destination" tabIndex='2' type='text' value={destination} onChange={(e) => setDestination(e.target.value)} />
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button primary>Submit</Button>
-                    <Button>Cancel</Button>
+                    <Button primary tabIndex='3' loading={isTransfering} onClick={() => onTransfer(amount, destination)}>Transfer</Button>
                 </Modal.Actions>
+                {error && <p className="error">{error}</p>}
             </Modal>
         </>
     )

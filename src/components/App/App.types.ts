@@ -1,5 +1,6 @@
 import { AnyAction, Dispatch } from 'redux'
 import { ConnectWalletRequestAction } from '../../modules/wallet/actions'
+import { OpenTransferModalAction } from '../../modules/transfer/actions'
 
 export type Props = {
   address: string,
@@ -8,11 +9,12 @@ export type Props = {
   isConnecting: boolean,
   error: string | null
   onConnect: () => void
+  onOpenTransferModal: () => void
 }
 
 export type MapStateProps = Pick<
   Props,
   'address' | 'balance' | 'isConnected' | 'isConnecting' | 'error'
 >
-export type MapDispatchProps = Pick<Props, 'onConnect'>
-export type MapDispatch = Dispatch<ConnectWalletRequestAction | AnyAction>
+export type MapDispatchProps = Pick<Props, 'onConnect' | 'onOpenTransferModal'>
+export type MapDispatch = Dispatch<ConnectWalletRequestAction | OpenTransferModalAction | AnyAction>
