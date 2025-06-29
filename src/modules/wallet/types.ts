@@ -1,8 +1,10 @@
 import { ethers } from 'ethers'
 
 export type WalletState = {
-  address: string | null
+  address: string | null,
+  balance: string | null,
   isConnecting: boolean
+  isTransferActive: boolean,
   error: string | null
 }
 

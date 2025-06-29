@@ -5,3 +5,4 @@ export const getAddress = (state: RootState) => getState(state).address || ''
 export const isConnected = (state: RootState) => !!getAddress(state)
 export const isConnecting = (state: RootState) => getState(state).isConnecting
 export const getError = (state: RootState) => getState(state).error
+export const getBalance = (state: RootState) => getState(state).balance || ''

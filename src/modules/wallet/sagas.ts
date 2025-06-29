@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, apply, takeEvery } from 'redux-saga/effects'
 import { isErrorWithMessage } from '../utils'
 import { connectWalletFailure, connectWalletSuccess, CONNECT_WALLET_REQUEST } from './actions'
 import { WindowWithEthereum } from './types'
@@ -30,14 +30,23 @@ export function* walletSaga() {
   yield takeEvery(CONNECT_WALLET_REQUEST, handleConnectWalletRequest)
 }
 
-function* handleConnectWalletRequest() {
+function* handleConnectWalletRequest(): Generator<any, void, any> {
   try {
     const provider = new ethers.BrowserProvider(windowWithEthereum.ethereum)
     yield call([provider, 'send'], 'eth_requestAccounts', []) as Awaited<ReturnType<typeof provider.send>>
     const signer = (yield call([provider, 'getSigner'])) as Awaited<ReturnType<typeof provider.getSigner>>
 
+    //I get the address of the wallet
     const address = (yield call([signer, 'getAddress'])) as Awaited<ReturnType<typeof signer.getAddress>>
-    yield put(connectWalletSuccess(address))
+    
+    //I will get the balance of the wallet
+    const contract = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider) as ethers.Contract
+    
+    //TODO: Check why balanceOf is not working
+    // Llamar al método balanceOf usando apply para que funcione con Redux Saga
+    const balance = (yield apply(contract, contract.balanceOf, [address])) as Awaited<ReturnType<typeof contract.balanceOf>>
+    
+    yield put(connectWalletSuccess(address, balance.toString()))
   } catch (error) {
     yield put(connectWalletFailure(isErrorWithMessage(error) ? error.message : 'Unknown error'))
   }
