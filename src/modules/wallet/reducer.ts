@@ -2,9 +2,11 @@ import { AnyAction } from 'redux'
 import {
   ConnectWalletFailureAction,
   ConnectWalletSuccessAction,
+  UpdateBalanceAction,
   CONNECT_WALLET_FAILURE,
   CONNECT_WALLET_REQUEST,
   CONNECT_WALLET_SUCCESS,
+  UPDATE_BALANCE,
 } from './actions'
 import { WalletState } from './types'
 
@@ -47,6 +49,14 @@ export function walletReducer(
         ...state,
         isConnecting: false,
         error,
+      }
+    }
+
+    case UPDATE_BALANCE: {
+      const { balance } = action.payload as UpdateBalanceAction['payload']
+      return {
+        ...state,
+        balance,
       }
     }
 

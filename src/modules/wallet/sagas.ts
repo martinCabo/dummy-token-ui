@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
-import { call, put, apply, takeEvery } from 'redux-saga/effects'
+import { call, put, apply, takeEvery, select } from 'redux-saga/effects'
 import { isErrorWithMessage } from '../utils'
-import { connectWalletFailure, connectWalletSuccess, CONNECT_WALLET_REQUEST } from './actions'
+import { connectWalletFailure, connectWalletSuccess, CONNECT_WALLET_REQUEST, updateBalance } from './actions'
 import { WindowWithEthereum } from './types'
 import { TRANSFER_REQUEST, transferFailure, TransferRequestAction, transferSuccess } from '../transfer/actions'
 
@@ -54,7 +54,7 @@ function* handleConnectWalletRequest(): Generator<any, void, any> {
   }
 }
 
-function* handleTransferRequest(action: TransferRequestAction) {
+function* handleTransferRequest(action: TransferRequestAction): Generator<any, void, any> {
   try {
     const { amount, destination } = action.payload
 
@@ -65,8 +65,17 @@ function* handleTransferRequest(action: TransferRequestAction) {
     //I get the contract
     const contract = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, signer) as ethers.Contract
     //I call the transfer function
-    
     yield apply(contract, contract.transfer, [destination, amount])
+    
+    // Get current balance from state and subtract the transferred amount
+    const currentBalance = yield select((state: any) => state.wallet.balance)
+    if (currentBalance) {
+      const newBalance = parseFloat(currentBalance) - amount
+      yield put(updateBalance(newBalance.toString()))
+    }else{
+      yield put(transferFailure("Error getting the current balance"))  
+    }
+    
     //I put the success action
     yield put(transferSuccess())
   } catch (error) {

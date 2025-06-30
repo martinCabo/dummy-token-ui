@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Props } from './TransferModal.types'
 import { Button, Modal, Field, Close } from 'decentraland-ui'
 import './TransferModal.css'
@@ -7,6 +7,13 @@ import './TransferModal.css'
 const TransferModal: React.FC<Props> = ({isOpen,error, isTransfering, onClose, onTransfer}) => {
     const [amount, setAmount] = useState(0)
     const [destination, setDestination] = useState('')
+    useEffect(() => {
+        if(isOpen){
+            setAmount(0)
+            setDestination('')
+        }
+    }, [isOpen])
+    
     return (
         <>
             <Modal className="transfer-modal" size="small" open={isOpen} closeIcon={<Close onClick={onClose}/>} >
