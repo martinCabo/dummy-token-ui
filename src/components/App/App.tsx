@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Center, Footer, Header, Navbar, Page, Toast } from 'decentraland-ui'
+import { Button, Card, Center, Footer, Header, Message, Navbar, Page} from 'decentraland-ui'
 import { Props } from './App.types'
 import './App.css'
 import { TransferModal } from '../TransferModal'
@@ -9,6 +9,7 @@ const App: React.FC<Props> = ({
   balance, 
   isConnected, 
   isConnecting, 
+  isTransferSuccess,
   error, 
   onConnect,
   onOpenTransferModal
@@ -40,6 +41,7 @@ const App: React.FC<Props> = ({
               <Button primary onClick={onOpenTransferModal}>
                 Transfer Tokens
               </Button>
+              {isTransferSuccess && <Message success content={'The transfer was completed successfully'} header={'Transfer success'} />}
             </Card>
             <TransferModal/>
             </>

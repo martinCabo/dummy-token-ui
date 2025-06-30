@@ -7,6 +7,7 @@ export type Props = {
   balance: string,
   isConnected: boolean
   isConnecting: boolean,
+  isTransferSuccess: boolean,
   error: string | null
   onConnect: () => void
   onOpenTransferModal: () => void
@@ -14,7 +15,7 @@ export type Props = {
 
 export type MapStateProps = Pick<
   Props,
-  'address' | 'balance' | 'isConnected' | 'isConnecting' | 'error'
+  'address' | 'balance' | 'isConnected' | 'isConnecting' | 'isTransferSuccess' | 'error'
 >
 export type MapDispatchProps = Pick<Props, 'onConnect' | 'onOpenTransferModal'>
 export type MapDispatch = Dispatch<ConnectWalletRequestAction | OpenTransferModalAction | AnyAction>

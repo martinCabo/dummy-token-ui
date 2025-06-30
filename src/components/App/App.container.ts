@@ -8,6 +8,7 @@ import {
   isConnected,
   isConnecting,
 } from '../../modules/wallet/selectors'
+import { isTransferSuccess } from '../../modules/transfer/selectors'
 import { RootState } from '../../modules/types'
 import { MapDispatch, MapDispatchProps, MapStateProps } from './App.types'
 import App from './App'
@@ -17,6 +18,7 @@ const mapState = (state: RootState): MapStateProps => ({
   balance: getBalance(state),
   isConnected: isConnected(state),
   isConnecting: isConnecting(state),
+  isTransferSuccess: isTransferSuccess(state),
   error: getError(state),
 })
 

@@ -13,6 +13,7 @@ const INITIAL_STATE: WalletState = {
   balance: null,
   isConnecting: false,
   isTransferActive: true,
+  isTransferSuccess: false,
   error: null,
 }
 

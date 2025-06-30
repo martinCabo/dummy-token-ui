@@ -6,6 +6,7 @@ import { TRANSFER_FAILURE, TRANSFER_REQUEST, TRANSFER_SUCCESS, TransferFailureAc
 const INITIAL_STATE: TransferState = {
   isTransfered: false,
   isTransfering: false,
+  isTransferSuccess: false,
   isOpen: false,
   error: null,
 }
@@ -27,6 +28,8 @@ export function transferReducer(
         ...state,
         isTransfered: true,
         isTransfering: false,
+        isTransferSuccess: true, 
+        isOpen: false,
         error: null,
       }
     }
