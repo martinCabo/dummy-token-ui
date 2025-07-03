@@ -1,7 +1,5 @@
-import { AnyAction } from 'redux'
-
 import { TransferState } from './types'
-import { TRANSFER_FAILURE, TRANSFER_REQUEST, TRANSFER_SUCCESS, TransferFailureAction, OPEN_TRANSFER_MODAL, CLOSE_TRANSFER_MODAL } from './actions'
+import { TRANSFER_FAILURE, TRANSFER_REQUEST, TRANSFER_SUCCESS, TransferFailureAction, OPEN_TRANSFER_MODAL, CLOSE_TRANSFER_MODAL, OpenTransferModalAction, CloseTransferModalAction, TransferRequestAction, TransferSuccessAction } from './actions'
 
 const INITIAL_STATE: TransferState = {
   isTransfered: false,
@@ -11,9 +9,11 @@ const INITIAL_STATE: TransferState = {
   error: null,
 }
 
+type TransferReducerAction = TransferRequestAction | TransferSuccessAction | TransferFailureAction | OpenTransferModalAction | CloseTransferModalAction
+
 export function transferReducer(
   state: TransferState = INITIAL_STATE,
-  action: AnyAction
+  action: TransferReducerAction
 ): TransferState {
   switch (action.type) {
     case TRANSFER_REQUEST: {

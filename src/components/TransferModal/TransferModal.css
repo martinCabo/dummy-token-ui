@@ -1,4 +1,13 @@
-.TransferModal .error {
-    margin-top: 20px;
-    color: var(--primary);
-  }
+.transfer-modal .general-error {
+    text-align: center;
+}
+
+.transfer-modal .modal-header {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.transfer-modal .modal-description {
+    text-align: center;
+}

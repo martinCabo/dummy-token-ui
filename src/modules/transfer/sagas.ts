@@ -23,6 +23,17 @@ function* handleTransferRequest(action: TransferRequestAction): Generator<any, v
   try {
     const { amount, destination } = action.payload
 
+    // Get current balance from state and subtract the transferred amount
+    const currentBalance = yield select((state: any) => state.wallet.balance)
+    if(!currentBalance){
+      yield put(transferFailure("Error getting the current balance"))
+      return
+    }
+    if(amount > currentBalance){
+      yield put(transferFailure("Insufficient balance"))
+      return
+    }
+
     const provider = new ethers.BrowserProvider(windowWithEthereum.ethereum)
     yield call([provider, 'send'], 'eth_requestAccounts', []) as Awaited<ReturnType<typeof provider.send>>
     //I get the signer
@@ -32,15 +43,8 @@ function* handleTransferRequest(action: TransferRequestAction): Generator<any, v
     //I call the transfer function
     yield apply(contract, contract.transfer, [destination, amount])
     
-    // Get current balance from state and subtract the transferred amount
-    const currentBalance = yield select((state: any) => state.wallet.balance)
-    if (currentBalance) {
-      const newBalance = parseFloat(currentBalance) - amount
-      yield put(updateBalance(newBalance.toString()))
-    }else{
-      yield put(transferFailure("Error getting the current balance"))  
-    }
-    
+    const newBalance = parseFloat(currentBalance) - amount
+    yield put(updateBalance(newBalance.toString()))
     //I put the success action
     yield put(transferSuccess())
   } catch (error) {

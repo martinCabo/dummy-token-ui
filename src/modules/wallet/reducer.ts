@@ -1,4 +1,3 @@
-import { AnyAction } from 'redux'
 import {
   ConnectWalletFailureAction,
   ConnectWalletSuccessAction,
@@ -7,6 +6,7 @@ import {
   CONNECT_WALLET_REQUEST,
   CONNECT_WALLET_SUCCESS,
   UPDATE_BALANCE,
+  ConnectWalletRequestAction,
 } from './actions'
 import { WalletState } from './types'
 
@@ -19,9 +19,11 @@ const INITIAL_STATE: WalletState = {
   error: null,
 }
 
+type WalletReducerAction = ConnectWalletRequestAction | ConnectWalletSuccessAction | ConnectWalletFailureAction | UpdateBalanceAction
+
 export function walletReducer(
   state: WalletState = INITIAL_STATE,
-  action: AnyAction
+  action: WalletReducerAction
 ): WalletState {
   switch (action.type) {
     case CONNECT_WALLET_REQUEST: {

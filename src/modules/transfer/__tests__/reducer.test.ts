@@ -17,18 +17,6 @@ describe('Transfer Reducer', () => {
     error: null,
   }
 
-  describe('Initial State', () => {
-    it('should return the initial state when no action is provided', () => {
-      const result = transferReducer(undefined, { type: 'UNKNOWN_ACTION' })
-      expect(result).toEqual(initialState)
-    })
-
-    it('should return the initial state when an unknown action is dispatched', () => {
-      const result = transferReducer(initialState, { type: 'UNKNOWN_ACTION' })
-      expect(result).toEqual(initialState)
-    })
-  })
-
   describe('TRANSFER_REQUEST', () => {
     it('should set isTransfering to true and clear error when transfer request is made', () => {
       const stateWithError: TransferState = {

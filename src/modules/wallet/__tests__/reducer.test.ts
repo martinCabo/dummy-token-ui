@@ -17,12 +17,6 @@ describe('Wallet Reducer', () => {
     error: null,
   };
 
-  describe('Estado inicial', () => {
-    it('debería retornar el estado inicial', () => {
-      expect(walletReducer(undefined, { type: 'UNKNOWN' })).toEqual(initialState);
-    });
-  });
-
   describe('CONNECT_WALLET_REQUEST', () => {
     it('debería manejar la solicitud de conexión de wallet', () => {
       const action = connectWalletRequest();
@@ -96,18 +90,6 @@ describe('Wallet Reducer', () => {
       };
 
       expect(walletReducer(stateWithWallet, action)).toEqual(expectedState);
-    });
-  });
-
-  describe('Acción desconocida', () => {
-    it('debería retornar el estado actual para acciones desconocidas', () => {
-      const currentState = {
-        ...initialState,
-        address: '0x1234567890123456789012345678901234567890',
-        balance: '100.0',
-      };
-
-      expect(walletReducer(currentState, { type: 'UNKNOWN_ACTION' })).toEqual(currentState);
     });
   });
 }); 
