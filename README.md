@@ -57,9 +57,6 @@ Add the following environment variables to your `.env` file:
 ```env
 # Dummy Token Contract Address (you'll get this from the deployment)
 VITE_TOKEN_ADDRESS=0x... # Replace with your deployed contract address
-
-# Optional: Application title
-VITE_APP_TITLE=Dummy Token Manager
 ```
 
 ### 3. Dummy Token Setup

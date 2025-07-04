@@ -11,9 +11,6 @@ const windowWithEthereum = window as unknown as WindowWithEthereum
 
 /* This is the Dummy Token address, it identifies the token contract once deployed */
 export const TOKEN_ADDRESS = import.meta.env.VITE_TOKEN_ADDRESS
-if (!TOKEN_ADDRESS) {
-  console.error(`Missing env variable VITE_TOKEN_ADDRESS`)
-}
 
 export function* transferSaga() {
   yield takeEvery(TRANSFER_REQUEST, handleTransferRequest)
@@ -22,6 +19,11 @@ export function* transferSaga() {
 function* handleTransferRequest(action: TransferRequestAction): Generator<any, void, any> {
   try {
     const { amount, destination } = action.payload
+
+    if(!TOKEN_ADDRESS){
+      yield put(transferFailure("Error getting the token address. Please check the config file."))
+      return
+    }
 
     // Get current balance from state and subtract the transferred amount
     const currentBalance = yield select((state: any) => state.wallet.balance)
