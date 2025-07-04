@@ -1,30 +1,197 @@
 # Dummy Token UI
 
-A simple UI for a [Dummy Token](https://github.com/decentraland/dummy-token). This frontend allows the user to connect their wallet and see their address. It is built using `react` + `redux` + `redux-saga`.
+A React-based frontend application for managing [Dummy Token](https://github.com/decentraland/dummy-token). This application allows users to connect their wallet, view their token balance, and transfer tokens to other addresses.
 
-# Directory structure and standards
+## 🚀 Features
 
-The repository splits the `redux` logic into `modules`, which contain all the actions/sagas/reducer/selectors for a specific domain. The `react` components can be found under the `components` directory, each component has its own directory which contains always a `.tsx` file with the component itself and a `.css` file with its styles. The components are always pure, and if they need to be connected to the redux store it is done by wrapping it with a `.container.ts` file that maps the necessary properties and callbacks to extract the data from the store and dispatch the required actions.
+- **Wallet Connection**: Connect to MetaMask or other Web3 wallets
+- **Balance Display**: View your Dummy Token balance
+- **Token Transfer**: Transfer tokens to any Ethereum address
+- **Responsive Design**: Built with Decentraland UI components
 
-# Task
+## 🛠️ Tech Stack
 
-The current state of the frontend allows the user to connect their wallet and see their address. Your task is add the following features:
+- **Frontend**: React 17 + TypeScript
+- **State Management**: Redux + Redux Saga
+- **UI Components**: [Decentraland UI](https://ui.decentraland.org/)
+- **Web3**: Ethers.js
+- **Build Tool**: Vite
+- **Testing**: Jest + Testing Library
 
-- Allow the user to see their Dummy Token balance once their wallet is connected
-- Allow the user to transfer Dummy Tokens
+## 📋 Prerequisites
 
-To achieve this you will need to modify the existing redux module and/or add new ones, also you will need to adapt the react components to allow the user to fullfil all the necessary requirements by modifying the existing components/containers and/or adding new ones as well.
+Before running this application, you need:
 
-You will need to make use of `decentraland-ui` components to build the missing parts of the frontend. You can see examples of the available components here: [Decentraland UI](https://ui.decentraland.org/).
+1. **Node.js** (v16 or higher)
+2. **npm** or **yarn**
+3. **MetaMask** browser extension
+4. **Dummy Token Contract** deployed locally (see [Dummy Token Setup](#dummy-token-setup))
 
-The final state of the frontend should look something like this:
+## 🔧 Installation & Setup
 
-![Screencast](https://user-images.githubusercontent.com/2781777/115337070-bf24b980-a176-11eb-89e5-d4690893271a.gif)
+### 1. Clone and Install Dependencies
 
-## Setup
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd dummy-token-ui
 
-1. Run `cp .env.example .env` and fill the environment variables
-2. Run `npm install`
-3. Run `npm start`
+# Install dependencies
+npm install
+```
 
-You will also need to setup a local ethereum development environment and deploy the Dummy Token there, to do that [follow these instructions](https://github.com/decentraland/dummy-token#setup).
+### 2. Environment Configuration
+
+Create a `.env` file in the root directory:
+
+```bash
+# Copy the example file (if it exists)
+cp .env.example .env
+
+# Or create it manually
+touch .env
+```
+
+Add the following environment variables to your `.env` file:
+
+```env
+# Dummy Token Contract Address (you'll get this from the deployment)
+VITE_TOKEN_ADDRESS=0x... # Replace with your deployed contract address
+
+# Optional: Application title
+VITE_APP_TITLE=Dummy Token Manager
+```
+
+### 3. Dummy Token Setup
+
+This application requires a running Dummy Token contract. Follow these steps to set up the token:
+
+#### Option A: Use the Official Dummy Token Repository
+
+1. **Clone the Dummy Token repository**:
+   ```bash
+   git clone https://github.com/decentraland/dummy-token.git
+   cd dummy-token
+   npm install
+   ```
+
+2. **Start a local Ethereum node**:
+   ```bash
+   npx hardhat node --hostname 0.0.0.0
+   ```
+   Keep this terminal running.
+
+3. **Deploy the Dummy Token contract** (in a new terminal):
+   ```bash
+   npx hardhat --network localhost run scripts/deploy.js
+   ```
+   **Important**: Copy the `Token Address` from the output - you'll need it for the `VITE_TOKEN_ADDRESS` environment variable.
+
+4. **Fund your account** (optional):
+   ```bash
+   npx hardhat --network localhost faucet <token-address> <your-address>
+   ```
+
+#### Option B: Use Your Own Token Contract
+
+If you have your own ERC-20 token contract, make sure it's deployed and accessible on your local network.
+
+### 4. MetaMask Configuration
+
+1. **Add the local network to MetaMask**:
+   - Network Name: `Localhost`
+   - New RPC URL: `http://127.0.0.1:8545`
+   - Chain ID: `1337`
+   - Currency Symbol: `ETH`
+
+2. **Import an account** using the private key from the Hardhat node output.
+
+3. **Add the Dummy Token to MetaMask**:
+   - Click "Add Token" → "Custom Token"
+   - Paste the token contract address
+   - You should see your token balance
+
+### 5. Run the Application
+
+```bash
+# Start the development server
+npm start
+```
+
+The application will be available at `http://localhost:5173`
+
+## 🎯 Usage
+
+1. **Connect Wallet**: Click the "Connect" button to connect your MetaMask wallet
+2. **View Balance**: Once connected, you'll see your wallet address and token balance
+3. **Transfer Tokens**: Click "Transfer Tokens" to open the transfer modal
+4. **Enter Details**: Provide the amount and destination address
+5. **Confirm Transfer**: Review and confirm the transaction in MetaMask
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/           # React components
+│   ├── App/             # Main application component
+│   ├── ConnectWallet/   # Wallet connection component
+│   ├── WalletDashboard/ # Wallet information display
+│   └── TransferModal/   # Token transfer modal
+├── modules/             # Redux modules
+│   ├── wallet/          # Wallet state management
+│   └── transfer/        # Transfer state management
+├── utils/               # Utility functions
+│   └── validations.ts   # Form validation logic
+└── index.tsx           # Application entry point
+```
+
+## 🔍 Development
+
+### Available Scripts
+
+- `npm start` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+- `npm test` - Run tests
+- `npm run test:coverage` - Run tests with coverage
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **"Missing env variable VITE_TOKEN_ADDRESS"**
+   - Make sure your `.env` file contains the correct token address
+   - Verify the token contract is deployed and accessible
+
+2. **"Failed to connect to wallet"**
+   - Ensure MetaMask is installed and unlocked
+   - Check that you're connected to the correct network (localhost:1337)
+   - Verify the account has some ETH for gas fees
+
+3. **"Transaction failed"**
+   - Check your account has sufficient ETH for gas
+   - Verify you have enough tokens to transfer
+   - Ensure the destination address is valid
+
+4. **"Cannot connect to localhost:8545"**
+   - Make sure the Hardhat node is running
+   - Check the network configuration in MetaMask
+
+## 🔗 Related Links
+
+- [Dummy Token Repository](https://github.com/decentraland/dummy-token)
+- [Decentraland UI Documentation](https://ui.decentraland.org/)
+- [Ethers.js Documentation](https://docs.ethers.io/)
+- [Redux Toolkit Documentation](https://redux-toolkit.js.org/)
