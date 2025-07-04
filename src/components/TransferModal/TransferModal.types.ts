@@ -1,6 +1,6 @@
-import { AnyAction, Dispatch } from 'redux'
+import { Dispatch } from 'redux'
 import { ConnectWalletRequestAction } from '../../modules/wallet/actions'
-import { CloseTransferModalAction } from '../../modules/transfer/actions'
+import { CloseTransferModalAction, TransferRequestAction } from '../../modules/transfer/actions'
 
 export type Props = {
   isTransfered: boolean
@@ -16,4 +16,4 @@ export type MapStateProps = Pick<
   'isTransfered' | 'isTransfering' | 'isOpen' | 'error'
 >
 export type MapDispatchProps = Pick<Props, 'onClose' | 'onTransfer'>
-export type MapDispatch = Dispatch<ConnectWalletRequestAction | CloseTransferModalAction | AnyAction>
+export type MapDispatch = Dispatch<ConnectWalletRequestAction | CloseTransferModalAction | TransferRequestAction>
