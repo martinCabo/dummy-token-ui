@@ -41,6 +41,7 @@ export function transferReducer(
         isTransfered: false,
         isTransfering: false,
         error,
+        isTransferSuccess: false,
       }
     }
 
