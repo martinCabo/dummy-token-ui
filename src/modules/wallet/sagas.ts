@@ -33,10 +33,10 @@ function* handleConnectWalletRequest(): Generator<any, void, any> {
     //I get the address of the wallet
     const address = (yield call([signer, 'getAddress'])) as Awaited<ReturnType<typeof signer.getAddress>>
     
-    //I will get the balance of the wallet
+    //Generate a new contract instance
     const contract = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider) as ethers.Contract
     
-    //TODO: Check why balanceOf is not working
+    //Get the balance of the wallet
     const balance = (yield apply(contract, contract.balanceOf, [address])) as Awaited<ReturnType<typeof contract.balanceOf>>
     
     yield put(connectWalletSuccess(address, balance.toString()))
