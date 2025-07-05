@@ -661,7 +661,7 @@ describe('Wallet Selectors', () => {
         }
       ]
       
-      testStates.forEach((testState, index) => {
+      testStates.forEach((testState) => {
         const rootState = { ...mockRootState, wallet: testState.wallet } as RootState
         
         expect(typeof getAddress(rootState)).toBe('string')
